@@ -9,13 +9,18 @@
 		</div>
 
 		<div class="entry-scrollarea">
-			<h2 v-for="entry in 100" :key="entry">Entry</h2>
+			<Entry v-for="entry in 100" :key="entry"> </Entry>
 		</div>
 	</div>
 </template>
 
 <script>
-export default {};
+import { defineAsyncComponent } from 'vue';
+export default {
+	components: {
+		Entry: defineAsyncComponent(() => import('./Entry.vue'))
+	}
+};
 </script>
 
 <style lang="scss" scoped>
