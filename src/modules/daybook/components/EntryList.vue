@@ -26,10 +26,11 @@ export default {
 <style lang="scss" scoped>
 .entry-list-container {
 	border-right: 1px solid #2c3250;
-	height: calc(100vh - 50px);
+	height: 100vh;
+	overflow: hidden;
 }
 .entry-scrollarea {
-	height: calc(100vh - 120px);
+	height: calc(100vh - 50px);
 	overflow: scroll;
 	overflow-x: hidden;
 }
