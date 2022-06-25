@@ -5,4 +5,7 @@ import router from './router';
 
 import './style/styles.scss';
 
-const app = createApp(App).use(store).use(router).mount('#app');
+const app = createApp(App);
+app.use(store);
+app.use(router);
+app.mount('#app');
