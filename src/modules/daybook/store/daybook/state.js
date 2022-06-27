@@ -1,4 +1,23 @@
-export default ()=>({
-  isLoading: true,
-  entries: [1,2,3,4],
-})
+export default () => ({
+	isLoading: true,
+	entries: [
+		{
+			id: new Date().getTime(),
+			date: new Date().toDateString(),
+			text: 'lorem ipsum dolor sit amet',
+			picture: null
+		},
+		{
+			id: new Date().getTime() + 1000,
+			date: new Date().toDateString(),
+			text: 'lorem ipsum dolor sit amet consectetur adipisicing elit',
+			picture: null
+		},
+		{
+			id: new Date().getTime() + 2000,
+			date: new Date().toDateString(),
+			text: 'lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+			picture: null
+		}
+	]
+});
