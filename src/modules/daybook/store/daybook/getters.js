@@ -12,6 +12,8 @@ export const getEntriesByTerm =
 		);
 	};
 
-export const getEntriesById = state => {
-	state.entries;
+export const getEntriesById = state => id => {
+	const entry = state.entries.find(entry => entry.id === id);
+	if (!entry) return;
+	return { ...entry };
 };

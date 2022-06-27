@@ -1,43 +1,92 @@
 <template>
-	<div class="entry-title d-flex justify-content-between p-2">
-		<div>
-			<span class="text-success fs-3 fw-bold">15 </span>
-			<span class="mx-1 fs-3">julio </span>
-			<span class="mx-2 fs-4 fw-light">2022, jueves</span>
+	<template v-if="entry">
+		<div class="entry-title d-flex justify-content-between p-2">
+			<div>
+				<span class="text-success fs-3 fw-bold">{{ day }} </span>
+				<span class="mx-1 fs-3">{{ month }} </span>
+				<span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
+			</div>
+			<div>
+				<button class="btn btn-danger mx-2">
+					Borrar
+					<i class="fas fa-trash-alt"></i>
+				</button>
+				<button class="btn btn-primary">
+					Subir foto
+					<i class="fas fa-upload"></i>
+				</button>
+			</div>
 		</div>
-		<div>
-			<button class="btn btn-danger mx-2">
-				Borrar
-				<i class="fas fa-trash-alt"></i>
-			</button>
-			<button class="btn btn-primary">
-				Subir foto
-				<i class="fas fa-upload"></i>
-			</button>
+
+		<hr />
+
+		<div class="d-flex flex-column h-75 px-3">
+			<textarea
+				placeholder="¿Que sucedio hoy?"
+				class="form-control"
+				v-model="entry.text"
+			></textarea>
 		</div>
-	</div>
-
-	<hr />
-
-	<div class="d-flex flex-column h-75 px-3">
-		<textarea
-			placeholder="¿Que sucedio hoy?"
-			class="form-control"
-		></textarea>
-	</div>
-	<Fab icon="fa-upload" />
-	<img
-		src="https://www.semana.es/wp-content/uploads/4355.jpg"
-		alt="Entry-picture"
-		class="img-thumbnail"
-	/>
+		<Fab icon="fa-upload" />
+		<img
+			src="https://www.semana.es/wp-content/uploads/4355.jpg"
+			alt="Entry-picture"
+			class="img-thumbnail"
+		/>
+	</template>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import { mapGetters } from 'vuex';
+import getDayMonthYear from '../helpers/getDayMonthYear';
+
 export default {
+	props: {
+		id: {
+			type: String,
+			required: true
+		}
+	},
 	components: {
 		Fab: defineAsyncComponent(() => import('../components/Fab.vue'))
+	},
+	data() {
+		return {
+			entry: null
+		};
+	},
+
+	computed: {
+		...mapGetters('daybook', ['getEntriesById']),
+		day() {
+			const { day } = getDayMonthYear(this.entry.date);
+			return day;
+		},
+		month() {
+			const { month } = getDayMonthYear(this.entry.date);
+			return month;
+		},
+		yearDay() {
+			const { yearDay } = getDayMonthYear(this.entry.date);
+			return yearDay;
+		}
+	},
+	methods: {
+		loadEntry() {
+			const entry = this.getEntriesById(this.id);
+			if (!entry) return this.$router.push({ name: 'no-entry' });
+
+			this.entry = entry;
+		}
+	},
+	created() {
+		this.loadEntry();
+	},
+	watch: {
+		id() {
+			this.loadEntry();
+		}
 	}
 };
 </script>
