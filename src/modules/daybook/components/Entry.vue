@@ -15,31 +15,6 @@
 </template>
 
 <script>
-const months = [
-	'enero',
-	'febrero',
-	'marzo',
-	'abril',
-	'mayo',
-	'junio',
-	'julio',
-	'agosto',
-	'septiembre',
-	'octubre',
-	'noviembre',
-	'diciembre'
-];
-
-const days = [
-	'domingo',
-	'lunes',
-	'martes',
-	'miércoles',
-	'jueves',
-	'viernes',
-	'sábado'
-];
-
 export default {
 	props: {
 		entry: {
@@ -55,7 +30,7 @@ export default {
 		},
 		day() {
 			const date = new Date(this.entry.date);
-			return date.getDay();
+			return date.getDate();
 		},
 		month() {
 			const date = new Date(this.entry.date);
