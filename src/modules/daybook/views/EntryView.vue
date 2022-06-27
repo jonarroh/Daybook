@@ -27,7 +27,7 @@
 				v-model="entry.text"
 			></textarea>
 		</div>
-		<Fab icon="fa-upload" />
+		<Fab icon="fa-upload" @on:click="saveEntry" />
 		<img
 			src="https://www.semana.es/wp-content/uploads/4355.jpg"
 			alt="Entry-picture"
@@ -38,8 +38,9 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear';
+import { updateEntry } from '../store/daybook/mutations';
 
 export default {
 	props: {
@@ -78,7 +79,12 @@ export default {
 			if (!entry) return this.$router.push({ name: 'no-entry' });
 
 			this.entry = entry;
-		}
+		},
+		async saveEntry() {
+			console.log('guardando...');
+			this.updateEntries(this.entry);
+		},
+		...mapActions('daybook', ['updateEntries'])
 	},
 	created() {
 		this.loadEntry();
