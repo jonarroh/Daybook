@@ -7,7 +7,12 @@
 				width="50"
 				class="d-inline-block aling-text-top mx-2"
 			/>
-			Day Book
+			<router-link
+				to="/daybook"
+				class="text-white text-decoration-none"
+			>
+				Day Book</router-link
+			>
 		</a>
 		<div class="d-flex">
 			<button class="btn btn-outline-info mx-2">

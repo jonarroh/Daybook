@@ -5,20 +5,38 @@
 				type="text"
 				class="form-control"
 				placeholder="buscar entradas"
+				v-model="term"
 			/>
 		</div>
 
 		<div class="entry-scrollarea">
-			<Entry v-for="entry in 100" :key="entry"> </Entry>
+			<Entry
+				v-for="entry in entriesByTerm"
+				:key="entry.id"
+				:entry="entry"
+			>
+			</Entry>
 		</div>
 	</div>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
+import { mapGetters } from 'vuex';
 export default {
 	components: {
 		Entry: defineAsyncComponent(() => import('./Entry.vue'))
+	},
+	computed: {
+		...mapGetters('daybook', ['getEntriesByTerm']),
+		entriesByTerm() {
+			return this.getEntriesByTerm(this.term);
+		}
+	},
+	data() {
+		return {
+			term: ''
+		};
 	}
 };
 </script>
