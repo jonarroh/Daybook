@@ -42,6 +42,7 @@
 import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear';
+import Swal from 'sweetalert2';
 
 export default {
 	props: {
@@ -77,7 +78,6 @@ export default {
 	methods: {
 		loadEntry() {
 			let entry;
-
 			if (this.id === 'new') {
 				entry = {
 					date: new Date().getTime(),
@@ -91,6 +91,20 @@ export default {
 			this.entry = entry;
 		},
 		async saveEntry() {
+			if (this.entry.text === '') {
+				Swal.fire({
+					title: 'Campo vacio',
+					text: 'Ingresa un texto',
+					icon: 'error'
+				});
+				return;
+			}
+			new Swal({
+				title: 'Cargando...',
+				text: 'Espere un momento',
+				allowOutsideClick: false
+			});
+			Swal.showLoading();
 			if (this.entry.id) {
 				await this.updateEntries(this.entry);
 			} else {
@@ -101,10 +115,36 @@ export default {
 					params: { id }
 				});
 			}
+			Swal.fire(
+				'Guardado',
+				'Entrada registrada correctamente',
+				'success'
+			);
 		},
 		async deleteEntry() {
-			await this.deleteEntries(this.entry.id);
-			this.$router.push({ name: 'no-entry' });
+			const { isConfirmed } = await Swal.fire({
+				title: '¿Estas seguro?',
+				text: 'Esta accion no se puede revertir',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#2c3e50',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Si, borrar'
+			});
+			if (isConfirmed) {
+				new Swal({
+					title: 'Cargando...',
+					text: 'Espere un momento',
+					allowOutsideClick: false
+				});
+				await this.deleteEntries(this.entry.id);
+				this.$router.push({ name: 'no-entry' });
+				Swal.fire(
+					'Borrado',
+					'Entrada borrada correctamente',
+					'success'
+				);
+			}
 		},
 		...mapActions('daybook', ['updateEntries']),
 		...mapActions('daybook', ['createEntries']),
