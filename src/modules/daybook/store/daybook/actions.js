@@ -19,4 +19,15 @@ export const updateEntries = async ({ commit }, entry) => {
 	commit('updateEntry', { ...entry });
 };
 
-export const createEntries = async ({ commit }) => {};
+export const createEntries = async ({ commit }, entry) => {
+	const { text, date, picture } = entry;
+	const dataToCreate = { text, date, picture };
+	const { data } = await daybookApi.post(
+		`entries.json`,
+		dataToCreate
+	);
+	dataToCreate.id = data.name;
+	commit('createEntry', { ...dataToCreate });
+
+	return data.name;
+};

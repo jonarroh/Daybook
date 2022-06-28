@@ -9,6 +9,17 @@
 			/>
 		</div>
 
+		<div class="mt-2 d-flex flex-column">
+			<a
+				class="btn btn-primary mt-2"
+				@click="
+					$router.push({ name: 'Entry', params: { id: 'new' } })
+				"
+			>
+				<i class="fa fa-plus-circle"></i>
+				Nueva entrada
+			</a>
+		</div>
 		<div class="entry-scrollarea">
 			<Entry
 				v-for="entry in entriesByTerm"

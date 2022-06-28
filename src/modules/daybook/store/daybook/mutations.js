@@ -6,4 +6,6 @@ export const updateEntry = (state, entry) => {
 	const idx = state.entries.map(e => e.id).indexOf(entry.id);
 	state.entries[idx] = entry;
 };
-export const addEntry = state => {};
+export const createEntry = (state, entry) => {
+	state.entries = [entry, ...state.entries];
+};

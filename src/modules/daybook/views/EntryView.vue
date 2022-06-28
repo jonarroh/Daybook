@@ -40,7 +40,6 @@
 import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear';
-import { updateEntry } from '../store/daybook/mutations';
 
 export default {
 	props: {
@@ -75,16 +74,33 @@ export default {
 	},
 	methods: {
 		loadEntry() {
-			const entry = this.getEntriesById(this.id);
-			if (!entry) return this.$router.push({ name: 'no-entry' });
+			let entry;
+			if (this.id === 'new') {
+				entry = {
+					date: new Date().getTime(),
+					text: ''
+				};
+			} else {
+				entry = this.getEntriesById(this.id);
+				if (!entry) return this.$router.push({ name: 'no-entry' });
+			}
 
 			this.entry = entry;
 		},
 		async saveEntry() {
-			console.log('guardando...');
-			this.updateEntries(this.entry);
+			if (this.entry.id) {
+				await this.updateEntries(this.entry);
+			} else {
+				const id = await this.createEntries(this.entry);
+				console.log({ id });
+				this.$router.push({
+					name: 'Entry',
+					params: { id }
+				});
+			}
 		},
-		...mapActions('daybook', ['updateEntries'])
+		...mapActions('daybook', ['updateEntries']),
+		...mapActions('daybook', ['createEntries'])
 	},
 	created() {
 		this.loadEntry();
