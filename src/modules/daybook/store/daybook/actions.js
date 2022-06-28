@@ -2,6 +2,10 @@ import daybookApi from '@/api/daybookApi';
 
 export const loadEntries = async ({ commit }) => {
 	const { data } = await daybookApi.get('entries.json');
+	if (!data) {
+		commit('setEntries', []);
+		return;
+	}
 	const entries = [];
 	for (let id of Object.keys(data)) {
 		entries.push({ id, ...data[id] });

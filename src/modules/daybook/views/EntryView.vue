@@ -21,9 +21,7 @@
 				</button>
 			</div>
 		</div>
-
 		<hr />
-
 		<div class="d-flex flex-column h-75 px-3">
 			<textarea
 				placeholder="¿Que sucedio hoy?"
@@ -79,6 +77,7 @@ export default {
 	methods: {
 		loadEntry() {
 			let entry;
+
 			if (this.id === 'new') {
 				entry = {
 					date: new Date().getTime(),
