@@ -31,3 +31,8 @@ export const createEntries = async ({ commit }, entry) => {
 
 	return data.name;
 };
+
+export const deleteEntries = async ({ commit }, id) => {
+	await daybookApi.delete(`entries/${id}.json`);
+	commit('deleteEntry', id);
+};
