@@ -2,6 +2,10 @@ import daybookApi from '@/api/daybookApi';
 
 export const loadEntries = async ({ commit }) => {
 	const { data } = await daybookApi.get('entries.json');
+	if (!data) {
+		commit('setEntries', []);
+		return;
+	}
 	const entries = [];
 	for (let id of Object.keys(data)) {
 		entries.push({ id, ...data[id] });
@@ -30,4 +34,9 @@ export const createEntries = async ({ commit }, entry) => {
 	commit('createEntry', { ...dataToCreate });
 
 	return data.name;
+};
+
+export const deleteEntries = async ({ commit }, id) => {
+	await daybookApi.delete(`entries/${id}.json`);
+	commit('deleteEntry', id);
 };

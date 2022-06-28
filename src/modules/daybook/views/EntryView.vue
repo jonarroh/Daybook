@@ -7,7 +7,11 @@
 				<span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
 			</div>
 			<div>
-				<button class="btn btn-danger mx-2">
+				<button
+					class="btn btn-danger mx-2"
+					v-if="entry.id"
+					@click="deleteEntry"
+				>
 					Borrar
 					<i class="fas fa-trash-alt"></i>
 				</button>
@@ -17,9 +21,7 @@
 				</button>
 			</div>
 		</div>
-
 		<hr />
-
 		<div class="d-flex flex-column h-75 px-3">
 			<textarea
 				placeholder="¿Que sucedio hoy?"
@@ -75,6 +77,7 @@ export default {
 	methods: {
 		loadEntry() {
 			let entry;
+
 			if (this.id === 'new') {
 				entry = {
 					date: new Date().getTime(),
@@ -92,15 +95,20 @@ export default {
 				await this.updateEntries(this.entry);
 			} else {
 				const id = await this.createEntries(this.entry);
-				console.log({ id });
+
 				this.$router.push({
 					name: 'Entry',
 					params: { id }
 				});
 			}
 		},
+		async deleteEntry() {
+			await this.deleteEntries(this.entry.id);
+			this.$router.push({ name: 'no-entry' });
+		},
 		...mapActions('daybook', ['updateEntries']),
-		...mapActions('daybook', ['createEntries'])
+		...mapActions('daybook', ['createEntries']),
+		...mapActions('daybook', ['deleteEntries'])
 	},
 	created() {
 		this.loadEntry();
