@@ -27,7 +27,7 @@
 				v-model="entry.text"
 			></textarea>
 		</div>
-		<Fab icon="fa-upload" />
+		<Fab icon="fa-upload" @on:click="saveEntry" />
 		<img
 			src="https://www.semana.es/wp-content/uploads/4355.jpg"
 			alt="Entry-picture"
@@ -38,7 +38,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import getDayMonthYear from '../helpers/getDayMonthYear';
 
 export default {
@@ -74,11 +74,33 @@ export default {
 	},
 	methods: {
 		loadEntry() {
-			const entry = this.getEntriesById(this.id);
-			if (!entry) return this.$router.push({ name: 'no-entry' });
+			let entry;
+			if (this.id === 'new') {
+				entry = {
+					date: new Date().getTime(),
+					text: ''
+				};
+			} else {
+				entry = this.getEntriesById(this.id);
+				if (!entry) return this.$router.push({ name: 'no-entry' });
+			}
 
 			this.entry = entry;
-		}
+		},
+		async saveEntry() {
+			if (this.entry.id) {
+				await this.updateEntries(this.entry);
+			} else {
+				const id = await this.createEntries(this.entry);
+				console.log({ id });
+				this.$router.push({
+					name: 'Entry',
+					params: { id }
+				});
+			}
+		},
+		...mapActions('daybook', ['updateEntries']),
+		...mapActions('daybook', ['createEntries'])
 	},
 	created() {
 		this.loadEntry();
