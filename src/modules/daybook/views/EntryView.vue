@@ -40,14 +40,14 @@
 		</div>
 		<Fab icon="fa-upload" @on:click="saveEntry" />
 		<img
-			v-if="entry.picture"
+			v-if="entry.picture && !localImage"
 			:src="entry.picture"
 			alt="Entry-picture"
 			class="img-thumbnail"
 		/>
 		<img
-			v-else="localImage"
-			src="https://www.semana.es/wp-content/uploads/4355.jpg"
+			v-if="localImage"
+			:src="localImage"
 			alt="Entry-picture"
 			class="img-thumbnail"
 		/>
@@ -124,9 +124,11 @@ export default {
 				allowOutsideClick: false
 			});
 			Swal.showLoading();
-
-			this.entry.picture = await uploadImages(this.file);
-
+			if (this.entry.picture === null) {
+				this.entry.picture = await uploadImages(this.file);
+			} else {
+				this.entry.picture = this.localImage;
+			}
 			if (this.entry.id) {
 				await this.updateEntries(this.entry);
 			} else {
@@ -196,6 +198,7 @@ export default {
 	watch: {
 		id() {
 			this.loadEntry();
+			this.localImage = null;
 		}
 	}
 };
