@@ -1,0 +1,9 @@
+{
+	"redirects": [
+		{
+			"source": "/AboutLuiz",
+			"destination": "/index.html",
+			"permanent": true
+		}
+	]
+}
