@@ -6,6 +6,15 @@
 				<span class="mx-1 fs-3">{{ month }} </span>
 				<span class="mx-2 fs-4 fw-light">{{ yearDay }}</span>
 			</div>
+
+			<input
+				type="file"
+				@change="onSelectedImage"
+				ref="imageInput"
+				class="d-none"
+				accept="image/png, image/jpeg"
+			/>
+
 			<div>
 				<button
 					class="btn btn-danger mx-2"
@@ -15,7 +24,7 @@
 					Borrar
 					<i class="fas fa-trash-alt"></i>
 				</button>
-				<button class="btn btn-primary">
+				<button class="btn btn-primary" @click="onSelectImage">
 					Subir foto
 					<i class="fas fa-upload"></i>
 				</button>
@@ -31,6 +40,13 @@
 		</div>
 		<Fab icon="fa-upload" @on:click="saveEntry" />
 		<img
+			v-if="entry.picture"
+			:src="entry.picture"
+			alt="Entry-picture"
+			class="img-thumbnail"
+		/>
+		<img
+			v-else="localImage"
 			src="https://www.semana.es/wp-content/uploads/4355.jpg"
 			alt="Entry-picture"
 			class="img-thumbnail"
@@ -41,8 +57,9 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
-import getDayMonthYear from '../helpers/getDayMonthYear';
 import Swal from 'sweetalert2';
+import getDayMonthYear from '../helpers/getDayMonthYear';
+import uploadImages from '../helpers/uploadImages';
 
 export default {
 	props: {
@@ -56,7 +73,9 @@ export default {
 	},
 	data() {
 		return {
-			entry: null
+			entry: null,
+			localImage: null,
+			file: null
 		};
 	},
 
@@ -105,6 +124,9 @@ export default {
 				allowOutsideClick: false
 			});
 			Swal.showLoading();
+
+			this.entry.picture = await uploadImages(this.file);
+
 			if (this.entry.id) {
 				await this.updateEntries(this.entry);
 			} else {
@@ -148,7 +170,25 @@ export default {
 		},
 		...mapActions('daybook', ['updateEntries']),
 		...mapActions('daybook', ['createEntries']),
-		...mapActions('daybook', ['deleteEntries'])
+		...mapActions('daybook', ['deleteEntries']),
+		onSelectedImage(e) {
+			const file = e.target.files[0];
+			if (!file) {
+				this.file = null;
+				this.localImage = null;
+				return;
+			}
+
+			this.file = file;
+			const reader = new FileReader();
+			reader.onload = e => {
+				this.localImage = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		},
+		onSelectImage() {
+			this.$refs.imageInput.click();
+		}
 	},
 	created() {
 		this.loadEntry();
