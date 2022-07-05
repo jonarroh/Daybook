@@ -22,13 +22,22 @@ const useAuth = () => {
 		return resp;
 	};
 
+	const logout = () => {
+		store.commit('auth/logoutUser');
+		store.commit('daybook/clearEntry');
+	};
+
 	return {
 		createUser,
 		loginUser,
 		checkAuth,
 		authStatus: computed(() => {
 			store.getters['auth/currentState'];
-		})
+		}),
+		username: computed(() => {
+			store.getters['auth/currentUser'];
+		}),
+		logout
 	};
 };
 

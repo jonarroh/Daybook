@@ -21,3 +21,7 @@ export const logoutUser = state => {
 	state.user = null;
 	state.status = 'not-authenticated';
 };
+
+export const clearEntry = state => {
+	state.entries = [];
+};
