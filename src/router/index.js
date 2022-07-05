@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import daybookRoter from '@/modules/daybook/router';
 import authRoter from '@/modules/auth/router';
+import isAuthenticated from './auth-guard';
 
 const routes = [
 	{
@@ -15,6 +16,7 @@ const routes = [
 	},
 	{
 		path: '/daybook',
+		beforeEnter: [isAuthenticated],
 		...daybookRoter
 	},
 	{
