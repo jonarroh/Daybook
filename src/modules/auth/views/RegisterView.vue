@@ -1,6 +1,9 @@
 <template>
 	<span class="login100-form-title p-b-41"> Registrar </span>
-	<form class="login100-form validate-form p-b-33 p-t-5">
+	<form
+		class="login100-form validate-form p-b-33 p-t-5"
+		@submit.prevent="onSubmit"
+	>
 		<div
 			class="wrap-input100 validate-input"
 			data-validate="ingrese su usuario"
@@ -21,7 +24,7 @@
 			<input
 				v-model="userForm.email"
 				class="input100"
-				type="text"
+				type="email"
 				placeholder="Correo"
 				required
 			/>
@@ -43,7 +46,9 @@
 		</div>
 
 		<div class="container-login100-form-btn m-t-32">
-			<button class="login100-form-btn">Registrar</button>
+			<button type="submit" class="login100-form-btn">
+				Registrar
+			</button>
 		</div>
 
 		<div class="container-login100-form-btn m-t-32">
@@ -55,12 +60,19 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import useAuth from '../components/useAuth';
 
+const { createUser } = useAuth();
 const userForm = ref({
 	username: '',
 	email: '',
 	password: ''
 });
+
+const onSubmit = async () => {
+	const { ok, message } = await createUser(userForm.value);
+	console.log(ok, message);
+};
 </script>
 
 <style lang="scss" scoped>
