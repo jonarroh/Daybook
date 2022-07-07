@@ -51,14 +51,14 @@ import useAuth from '../components/useAuth';
 import Swal from 'sweetalert2';
 
 const router = useRouter();
-const { loginUser } = useAuth();
+const { logiUser } = useAuth();
 const userForm = ref({
-	email: '',
-	password: ''
+	email: 'urieher99@gmail.com',
+	password: 'Ganondorf09#'
 });
 
 const onSubmit = async () => {
-	const { ok, message } = await loginUser(userForm.value);
+	const { ok, message } = await logiUser(userForm.value);
 	if (!ok) {
 		return Swal.fire({
 			title: 'Error',

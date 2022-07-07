@@ -1,5 +1,7 @@
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
+
+
 
 const useAuth = () => {
 	const store = useStore();
@@ -10,7 +12,7 @@ const useAuth = () => {
 		return resp;
 	};
 
-	const loginUser = async user => {
+	const logiUser = async user => {
 		const resp = await store.dispatch('auth/signInUser', user);
 
 		return resp;
@@ -22,13 +24,20 @@ const useAuth = () => {
 		return resp;
 	};
 
+	const logout = () => {
+		store.commit('auth/logoutUser');
+		store.commit('daybook/clearEntry');
+	};
+
+	
+
 	return {
 		createUser,
-		loginUser,
+		logiUser,
 		checkAuth,
-		authStatus: computed(() => {
-			store.getters['auth/currentState'];
-		})
+		authStatus: computed(() => store.getters['auth/currentState']),
+		username: computed(() => store.getters['auth/currentUser']),
+		logout
 	};
 };
 

@@ -41,7 +41,7 @@ export const signInUser = async ({ commit }, user) => {
 
 		const { displayName, idToken, refreshToken } = data;
 		user.name = displayName;
-
+		console.log(user, "datos del user");
 		commit('loginUser', { user, idToken, refreshToken });
 		return { ok: true };
 	} catch (error) {
@@ -56,6 +56,7 @@ export const checkAuth = async ({ commit }) => {
 
 	if (!idToken) {
 		commit('logoutUser');
+		
 		return { ok: false, message: 'No token' };
 	}
 
@@ -63,13 +64,12 @@ export const checkAuth = async ({ commit }) => {
 		const { data } = await authApi.post(':lookup', {
 			idToken
 		});
-
-		const { displayName, email } = data;
+		const { displayName, email } = data.users[0];
 		const user = {
 			name: displayName,
 			email
 		};
-
+		
 		commit('loginUser', { user, idToken, refreshToken });
 		return { ok: true };
 	} catch (error) {
