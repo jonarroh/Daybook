@@ -53,8 +53,8 @@ import Swal from 'sweetalert2';
 const router = useRouter();
 const { logiUser } = useAuth();
 const userForm = ref({
-	email: 'urieher99@gmail.com',
-	password: 'Ganondorf09#'
+	email: '',
+	password: ''
 });
 
 const onSubmit = async () => {
