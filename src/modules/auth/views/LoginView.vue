@@ -38,7 +38,7 @@
 
 		<div class="container-login100-form-btn m-t-32">
 			<router-link :to="{ name: 'registrar' }"
-				>¿No tienes cuenta?</router-link
+				>¿No tienes cuenta aun?</router-link
 			>
 		</div>
 	</form>
@@ -49,8 +49,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import useAuth from '../components/useAuth';
 import Swal from 'sweetalert2';
-
-
 
 const router = useRouter();
 const { logiUser } = useAuth();
