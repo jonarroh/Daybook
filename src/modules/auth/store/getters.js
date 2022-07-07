@@ -7,5 +7,6 @@ export const currentState = state => {
 };
 
 export const currentUser = state => {
+
 	return state.user?.name || '';
 };

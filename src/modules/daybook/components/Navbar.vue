@@ -11,7 +11,7 @@
 				to="/daybook"
 				class="text-white text-decoration-none"
 			>
-				{{ username }}</router-link
+				{{ username  }} </router-link
 			>
 		</a>
 		<div class="d-flex">
@@ -27,6 +27,7 @@ import { useRouter } from 'vue-router';
 import useAuth from '../../auth/components/useAuth';
 const router = useRouter();
 const { username, logout } = useAuth();
+
 const onLogout = () => {
 	logout();
 	router.push({ name: 'login' });

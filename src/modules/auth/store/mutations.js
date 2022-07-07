@@ -8,12 +8,14 @@ export const loginUser = (state, { user, idToken, refreshToken }) => {
 		localStorage.setItem('refreshToken', refreshToken);
 		state.refreshToken = refreshToken;
 	}
-
+	
+	
 	state.user = user;
 	state.status = 'authenticated';
 };
 
 export const logoutUser = state => {
+	console.log('se borraron los datos')
 	localStorage.removeItem('idToken');
 	localStorage.removeItem('refreshToken');
 	state.idToken = null;
@@ -22,6 +24,3 @@ export const logoutUser = state => {
 	state.status = 'not-authenticated';
 };
 
-export const clearEntry = state => {
-	state.entries = [];
-};
